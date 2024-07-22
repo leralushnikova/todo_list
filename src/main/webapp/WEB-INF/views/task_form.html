@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${task.id == null} ? 'Add New Task' : 'Edit Task'"></h1>
+    <form th:action="@{/tasks/save}" th:object="${task}" method="post">
+        <input type="hidden" th:field="*{id}" id="id">
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}" placeholder="Enter description">
+        </div>
+        <div class="form-group">
+            <select name="status">
+                <option th:each="status : ${T(com.lushnikova.model.enums.Status).values()}"
+                        th:value="${status}" th:text="${status}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+</body>
+</html>
