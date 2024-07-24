@@ -7,28 +7,36 @@
 </head>
 <body>
 <div class="container">
-    <h1>Tasks List</h1>
+    <h1 th:utext="#{label.title}"></h1>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Description</th>
-            <th>Status</th>
+            <th th:utext="#{label.description}"></th>
+            <th th:utext="#{label.status}"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="task : ${tasks}">
-            <td th:text="${task.id}"></td>
-            <td th:text="${task.description}"></td>
-            <td th:text="${task.status}"></td>
+        <tr th:each="task : ${tasks.content}">
+            <td th:text="${task.id}" />
+            <td th:text="${task.description}" />
+            <td th:text="${task.status}" />
             <td>
-                <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>
-                <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm">Delete</a>
+                <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm" th:utext="#{label.edit}"></a>
+                <a th:href="@{/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm" th:utext="#{label.delete}"></a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a href="/tasks/new" class="btn btn-primary">Add New Task</a>
+
+    <a href="/tasks/new" class="btn btn-primary" th:utext="#{label.add_new_task}"></a>
+
+    <button th:if="${tasks.totalPages > 0}" class="pagination"
+         th:each="pageNumber : ${pageNumbers}" >
+        <a th:href="@{/tasks(size=${tasks.pageSize}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==tasks.pageNumber} ? active"></a>
+    </button>
 </div>
 </body>
 </html>

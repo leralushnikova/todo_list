@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -45,8 +46,17 @@ public class WebConfig implements WebApplicationInitializer, WebMvcConfigurer {
         context.register(WebConfig.class);
         context.register(SchedulerConfig.class);
 
-        FilterRegistration.Dynamic filterRegistration = servletContext.addFilter("myFilter", CustomFilter.class);
+       /* CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);*/
+
+        FilterRegistration.Dynamic filterRegistration = servletContext
+                .addFilter("myFilter", CustomFilter.class);
         filterRegistration.addMappingForUrlPatterns(null, false, "/*");
+
+        /*FilterRegistration.Dynamic filterRegistration2 = servletContext
+                .addFilter("characterEncodingFilter", characterEncodingFilter);
+        filterRegistration2.addMappingForUrlPatterns(null, false, "/*");*/
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
         ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcher", dispatcherServlet);
@@ -103,6 +113,7 @@ public class WebConfig implements WebApplicationInitializer, WebMvcConfigurer {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(this.applicationContext);
         templateResolver.setPrefix("/WEB-INF/views/");
+        templateResolver.setCharacterEncoding("UTF-8");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCacheable(true);

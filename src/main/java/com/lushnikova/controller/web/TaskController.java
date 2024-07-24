@@ -4,10 +4,16 @@ import com.lushnikova.model.command.TaskCommand;
 import com.lushnikova.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Controller
@@ -18,9 +24,26 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public ModelAndView getTask(ModelAndView modelAndView, @RequestParam(name = "p", defaultValue = "1") int  pageNumber) {
+    public ModelAndView getTask(ModelAndView modelAndView,
+                                @RequestParam(name = "page") Optional<Integer> page,
+                                @RequestParam(name = "size") Optional<Integer> size) {
+
         modelAndView.setViewName("tasks");
-        modelAndView.addObject("tasks", taskService.findAll(Pageable.ofSize( 10)).getContent());
+
+        int currentPage = page.orElse(1) - 1;
+        int pageSize = size.orElse(5);
+        var taskPage = taskService.findAll(PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.ASC, "id")));
+
+        modelAndView.addObject("tasks", taskPage);
+
+        int totalPages = taskPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            modelAndView.addObject("pageNumbers", pageNumbers);
+        }
+
         return modelAndView;
     }
 

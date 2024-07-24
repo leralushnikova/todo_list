@@ -2,6 +2,7 @@ package com.lushnikova.model;
 
 import com.lushnikova.model.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -19,6 +20,7 @@ public class Task {
     @Column(name = "id")
     private Long id;
 
+    @Size(min = 3, max = 20)
     @Column(name = "description")
     private String description;
 

@@ -20,13 +20,13 @@ dependencies {
 
     //spring
     implementation 'org.springframework:spring-webmvc:6.1.11'
+    implementation 'org.springframework:spring-web:6.1.11'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.3'
     implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
     implementation 'org.zalando:problem:0.27.1'
-
-
 
     implementation 'org.springframework:spring-context:6.1.10'
     implementation 'org.springframework.data:spring-data-jdbc:3.3.1'

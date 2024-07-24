@@ -24,6 +24,8 @@ public class CustomFilter implements Filter {
         log.info("Remote Host:{}", request.getRemoteHost());
         log.info("Remote Address:{}", request.getRemoteAddr());
 
+        /*request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");*/
         filterchain.doFilter(request, response);
     }
 
